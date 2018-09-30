@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "972775454756",
+    "firebase_url": "https://imam-khomeini.firebaseio.com",
+    "project_id": "imam-khomeini",
+    "storage_bucket": "imam-khomeini.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972775454756:android:9b6f898b6612d7cc",
+        "android_client_info": {
+          "package_name": "dev.hasan.ruhullahapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "972775454756-ub9kjv2afinmpcpg0krj6qf5i3buqq16.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJde8jyY8vLb1zSqxBl_M1qRTUyCVkFt4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
