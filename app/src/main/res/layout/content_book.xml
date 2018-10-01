@@ -20,10 +20,6 @@
         android:textSize="18sp"
         android:layout_margin="10dp"
         android:textStyle="bold" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -37,6 +33,7 @@
                 android:scrollbarStyle="insideOverlay"
                 android:text="Loading . . ."
                 android:textIsSelectable="true"
+                android:isScrollContainer="true"
                 android:textSize="15sp" />
 
             <Button
@@ -50,7 +47,7 @@
                 android:background="@drawable/main_button_layout"
                 android:text="@string/next_chapter" />
         </LinearLayout>
-    </ScrollView>
+
 
 
 </LinearLayout>

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -14,17 +15,27 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.pushbots.push.Pushbots;
 
+import java.util.ArrayList;
+
 public class NotificationActivity extends AppCompatActivity  {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = "NotificationTesting";
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private TextView txtRegId, txtMessage;
+    private ListView notificationListView;
+    private ArrayAdapter notificationAdapter;
+    private ArrayList<String> notificationList;
+    public SharedPreferences sharedPreferences;
+    public SharedPreferences.Editor editor;
+    private int notiID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +43,21 @@ public class NotificationActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_notification);
         txtRegId = (TextView) findViewById(R.id.txt_reg_id);
         txtMessage = (TextView) findViewById(R.id.txt_push_message);
+        notificationListView = findViewById(R.id.notificationListView);
+        notificationList = new ArrayList();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(NotificationActivity.this);
+        editor = sharedPreferences.edit();
+        //Defining Notification ID
+        if (sharedPreferences.getInt("NID",0) == 0){
+            //notiID = 1;
+            Log.e(TAG,"NIDInSPIf: "+sharedPreferences.getInt("NID",0));
+            Log.e(TAG,"NIDVarIf: "+notiID);
+        } else {
+            notiID = sharedPreferences.getInt("NID",0);
+            notiID++;
+            Log.e(TAG,"NIDInSPElse: "+sharedPreferences.getInt("NID",0));
+            Log.e(TAG,"NIDVarElse: "+notiID);
+        }
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -49,13 +75,29 @@ public class NotificationActivity extends AppCompatActivity  {
                     // new push notification is received
 
                     String message = intent.getStringExtra("message");
+                    sharedPreferences.edit().putInt("NID",notiID).commit();
+                    Log.e(TAG,"NOTIBM: "+message);
+                    Log.e(TAG,"NOTIBF: "+sharedPreferences.getString("NoficationBody"+notiID,"No new Notification"));
 
+                    //editor.putString()
+                    sharedPreferences.edit().putString("NotificationBody"+notiID,message).commit();
+
+                    txtMessage.setText(sharedPreferences.getString("NotificationBody","No new Notification"));
                     Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
-
-                    txtMessage.setText(message);
+                    Log.e(TAG,"NOTIAF: "+sharedPreferences.getString("NotificationBody"+notiID,"No new Notification"));
+                    //txtMessage.setText(message);
                 }
             }
         };
+        Log.e(TAG,"NOTIASTF: "+sharedPreferences.getString("NotificationBody"+notiID,"No new Notification"));
+
+        Log.e(TAG,"NIDVarIf: "+notiID);
+        for (int i = 1; i <= notiID; i++) {
+            notificationList.add(sharedPreferences.getString("NotificationBody"+i,"No new Notification"));
+        }
+        Log.e(TAG,"ListOfNoti: "+notificationList);
+        notificationAdapter = new ArrayAdapter(NotificationActivity.this,android.R.layout.simple_list_item_1,notificationList);
+        notificationListView.setAdapter(notificationAdapter);
 
         displayFirebaseRegId();
     }

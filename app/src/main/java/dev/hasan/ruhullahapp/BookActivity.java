@@ -2,7 +2,9 @@ package dev.hasan.ruhullahapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -36,6 +38,8 @@ public class BookActivity extends AppCompatActivity
     private DocumentReference chapNameDocRef;
     private ArrayList<String> chapNameList;
     private ArrayList<String> chapContList;
+    private NetChecker netChecker;
+    private SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,13 @@ public class BookActivity extends AppCompatActivity
 
         //Local Functions
         init();
-        dataReadFromFirebase();
+
+        if (netChecker.isConnected()) {
+            dataReadFromFirebase();
+            Log.e(TAG,"Internet is available");
+        } else {
+            dataReadFromSP();
+        }
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +78,7 @@ public class BookActivity extends AppCompatActivity
         //Dynamic Menu
         //displayMenu();
     }
+
 
     @Override
     public void onBackPressed() {
@@ -124,6 +135,11 @@ public class BookActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);*/
         return true;
+    }
+
+
+    private void dataReadFromSP() {
+
     }
 
     private void displayMenu() {
@@ -708,6 +724,7 @@ public class BookActivity extends AppCompatActivity
     }
 
     private void init() {
+        netChecker = new NetChecker(BookActivity.this);
         chapterNameTV = findViewById(R.id.chapterNameTV);
         chapterContentTV = findViewById(R.id.chapterContentTV);
 
@@ -719,6 +736,7 @@ public class BookActivity extends AppCompatActivity
         chapNameDocRef = db.collection("Chapters").document("ChapterNames");
         chapContDocRef = db.collection("Chapters").document("Contents");
 
+        pref = PreferenceManager.getDefaultSharedPreferences(BookActivity.this);
 
     }
 
@@ -732,48 +750,174 @@ public class BookActivity extends AppCompatActivity
                     DocumentSnapshot namesChap = task.getResult();
                     Log.e(TAG, "in task successfull - " + namesChap);
                     if (namesChap.exists()) {
-                        chapNameList.add(namesChap.getString("One1"));
-                        chapNameList.add(namesChap.getString("One2"));
-                        chapNameList.add(namesChap.getString("One3"));
-                        chapNameList.add(namesChap.getString("One4"));
-                        chapNameList.add(namesChap.getString("One5"));
-                        chapNameList.add(namesChap.getString("One6"));
-                        chapNameList.add(namesChap.getString("One7"));
-                        chapNameList.add(namesChap.getString("One8"));
-                        chapNameList.add(namesChap.getString("One9"));
-                        chapNameList.add(namesChap.getString("One10"));
-                        chapNameList.add(namesChap.getString("One11"));
-                        chapNameList.add(namesChap.getString("One12"));
-                        chapNameList.add(namesChap.getString("One13"));
-                        chapNameList.add(namesChap.getString("One14"));
-                        chapNameList.add(namesChap.getString("two01"));
-                        chapNameList.add(namesChap.getString("two02"));
-                        chapNameList.add(namesChap.getString("two03"));
-                        chapNameList.add(namesChap.getString("two04"));
-                        chapNameList.add(namesChap.getString("two05"));
-                        chapNameList.add(namesChap.getString("two06"));
-                        chapNameList.add(namesChap.getString("two07"));
-                        chapNameList.add(namesChap.getString("two08"));
-                        chapNameList.add(namesChap.getString("two09"));
-                        chapNameList.add(namesChap.getString("two10"));
-                        chapNameList.add(namesChap.getString("two11"));
-                        chapNameList.add(namesChap.getString("two12"));
-                        chapNameList.add(namesChap.getString("two13"));
-                        chapNameList.add(namesChap.getString("two14"));
-                        chapNameList.add(namesChap.getString("two15"));
-                        chapNameList.add(namesChap.getString("two16"));
-                        chapNameList.add(namesChap.getString("two17"));
-                        chapNameList.add(namesChap.getString("two18"));
-                        chapNameList.add(namesChap.getString("two19"));
-                        chapNameList.add(namesChap.getString("two20"));
-                        chapNameList.add(namesChap.getString("two21"));
-                        chapNameList.add(namesChap.getString("two22"));
-                        chapNameList.add(namesChap.getString("three"));
-                        chapNameList.add(namesChap.getString("four"));
-                        chapNameList.add(namesChap.getString("five"));
-                        chapNameList.add(namesChap.getString("six"));
-                        chapNameList.add(namesChap.getString("seven"));
-                        chapNameList.add(namesChap.getString("eight"));
+                        String content = namesChap.getString("One1");
+                        pref.edit().putString("One1",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("One2");
+                        pref.edit().putString("One2",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("One3");
+                        pref.edit().putString("One3",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("One4");
+                        pref.edit().putString("One4",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("One5");
+                        pref.edit().putString("One5",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("One6");
+                        pref.edit().putString("One6",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("One7");
+                        pref.edit().putString("One7",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("One8");
+                        pref.edit().putString("One8",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("One9");
+                        pref.edit().putString("One9",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("One10");
+                        pref.edit().putString("One10",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("One11");
+                        pref.edit().putString("One11",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("One12");
+                        pref.edit().putString("One12",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("One13");
+                        pref.edit().putString("One13",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("One14");
+                        pref.edit().putString("One14",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two01");
+                        pref.edit().putString("two01",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two02");
+                        pref.edit().putString("two02",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two03");
+                        pref.edit().putString("two03",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two04");
+                        pref.edit().putString("two04",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two05");
+                        pref.edit().putString("two05",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two06");
+                        pref.edit().putString("two06",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two07");
+                        pref.edit().putString("two07",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two08");
+                        pref.edit().putString("two08",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two09");
+                        pref.edit().putString("two09",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two10");
+                        pref.edit().putString("two10",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two11");
+                        pref.edit().putString("two11",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two12");
+                        pref.edit().putString("two12",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two13");
+                        pref.edit().putString("two13",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two14");
+                        pref.edit().putString("two14",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two15");
+                        pref.edit().putString("two15",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two16");
+                        pref.edit().putString("two16",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two17");
+                        pref.edit().putString("two17",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two18");
+                        pref.edit().putString("two18",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two19");
+                        pref.edit().putString("two19",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two20");
+                        pref.edit().putString("two20",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two21");
+                        pref.edit().putString("two21",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("two22");
+                        pref.edit().putString("two22",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("three");
+                        pref.edit().putString("three",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("four");
+                        pref.edit().putString("four",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("five");
+                        pref.edit().putString("five",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("six");
+                        pref.edit().putString("six",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("seven");
+                        pref.edit().putString("seven",content);
+                        chapNameList.add(content);
+
+                        content = namesChap.getString("eight");
+                        pref.edit().putString("eight",content);
+                        chapNameList.add(content);
+
 
                         Log.e(TAG, "ChapNameList - " + chapNameList);
                         Log.e(TAG, "ChapNameSize - " + chapNameList.size());
